@@ -3,11 +3,11 @@ var dia = prompt('ingresar dia');
 var hoyEs = 'dia no valido';
 for (i in semana) {
     if (dia === semana[i]) {
-    	if (dia != 'domingo' && dia != 'sabado') {
-    		hoyEs = 'dia habil';
+    	if (dia === 'domingo' || dia === 'sabado') {
+    		hoyEs = 'fin de semana';
 				break;
     	} else {
-    		hoyEs = 'fin de semana';
+    		hoyEs = 'dia habil';
 				break;
     	}
     }
