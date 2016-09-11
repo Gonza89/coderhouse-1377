@@ -16,16 +16,16 @@ var valor2 = parseInt(prompt('ingresar otro numero: '));
 var operacion = prompt('ingresar una operacion: ');
 
 switch (operacion) {
-  case 'sumar':
+  case '+':
     sumar(valor1, valor2);
     break;
-  case 'restar':
+  case '-':
     restar(valor1, valor2);
     break;
-  case 'multiplicar':
+  case '*':
     multiplicar(valor1, valor2);
     break;
-  case 'dividir':
+  case '/':
     dividir(valor1, valor2);
     break;
   default:
