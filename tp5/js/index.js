@@ -1,14 +1,14 @@
 var peliculas = [];
 
-function Pelicula(ID, titulo) {
-  this.ID = ID;
+function Pelicula(id, titulo) {
+  this.id = id;
   this.titulo = titulo;
 
-  this.getID = function () {
-    return this.ID;
+  this.getId = function () {
+    return this.id;
   }
-  this.setID = function (ID) {
-    this.ID = ID;
+  this.setId = function (id) {
+    this.id = id;
   }
   this.getTitulo = function (){
     return this.titulo;
@@ -66,15 +66,15 @@ function ordenarPeliculasPorTitulo(array) {
   });
 }
 
-function ordenarPeliculasPorID(array) {
+function ordenarPeliculasPorid(array) {
   array.sort(function (a,b){
-    return (a.ID - b.ID)
+    return (a.id - b.id)
   });
 }
 
-function eliminarPelicula(array,ID){
+function eliminarPelicula(array,id){
   for (i in array){
-    if (array[i].getID() === ID){
+    if (array[i].getId() === id){
       array.splice(i,1);
     }
   }
