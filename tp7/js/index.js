@@ -21,8 +21,10 @@ function Pelicula(id,titulo, descripcion, imagen) {
   }
 }
 
-var imdb = (function () {
+var IMDB = (function () {
   var peliculas = [];
+  var claveLocalStorage = 'peliculas';
+
 
   var existePelicula = function (pelicula) {
     var pos = -1;
@@ -35,11 +37,23 @@ var imdb = (function () {
   }
 
   var borrarPeliculaDOM = function (pelicula) {
-    var pelicula = document.getElementById(peliculas.id);
+    var pelicula = document.getElementById(pelicula.id);
     pelicula.parentNode.removeChild(pelicula);
 
   }
-  var mostrarPeliculas = function(pelicula){
+
+  var precargarPeliculas = function () {
+    var datos = localStorage.getItem(claveLocalStorage);
+    if (datos !== null && datos !== ''){
+      peliculas = JSON.parse(datos);
+      for (i = 0; i < peliculas.length; i ++){
+        dibujarPelicula(peliculas[i]);
+      }
+    }
+  }
+
+
+  var dibujarPelicula = function(pelicula){
       var ul = document.getElementById('peliculas');
       var li = document.createElement("li");
       var h1 = document.createElement("h1");
@@ -49,7 +63,7 @@ var imdb = (function () {
       var descripcion = document.createTextNode(pelicula.descripcion);
       var imagen = document.createTextNode(pelicula.imagen);
 
-      li.setAttribute(pelicula.id);
+      li.setAttribute("id", pelicula.id);
       img.setAttribute("src","fuenteImagen");
 
       img.appendChild(imagen);
@@ -63,7 +77,7 @@ var imdb = (function () {
 
   var guardarPeliculas = function () {
     var datos = JSON.stringify(peliculas);
-    localStorage.setItem('pelicula', datos);
+    localStorage.setItem('peliculas', datos);
   }
 
   var recuperarPeliculas = function () {
@@ -74,13 +88,14 @@ var imdb = (function () {
     for (i in peliculas){
       dibujarPelicula(peliculas[i]); // llamar al otro modulo
   }
-
+}
 
   var agregarPelicula = function (pelicula) {
     var pos = existePelicula(pelicula);
     if (pos === -1){
       peliculas.push(pelicula);
       guardarPeliculas();
+      dibujarPelicula(pelicula);
       } else {
       alert('la pelicula ya existe');
     }
@@ -91,6 +106,7 @@ var imdb = (function () {
       if (pos > -1){
         peliculas.splice(pos,1);
         guardarPeliculas();
+        borrarPeliculaDOM(pelicula);
       } else {
         alert('la pelicula no existe');
       }
@@ -99,10 +115,10 @@ var imdb = (function () {
 
   var ordenarPeliculasPor = function (atributo) {
     peliculas.sort(function (a,b) {
-      if (a.atributo > b.atributo ) {
+      if (a[atributo] > b[atributo] ) {
         return 1;
       }
-      if (a.atributo < b.atributo) {
+      if (a[atributo] < b[atributo]) {
         return -1;
       }
       return 0
@@ -112,8 +128,9 @@ var imdb = (function () {
   }
 
   return {
-    agregarPeliculaPub = agregarPelicula,
-    eliminarPeliculaPub = eliminarPelicula
+    agregarPeliculaPub: agregarPelicula,
+    eliminarPeliculaPub: eliminarPelicula,
+    precargarPeliculasPub: precargarPeliculas
   }
 
 })()
