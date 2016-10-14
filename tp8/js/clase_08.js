@@ -39,6 +39,7 @@ var IMDB = (function () {
       li.setAttribute('id', pelicula.id);
       li.setAttribute('class', 'list-group-item');
       img.setAttribute('src', pelicula.imagen);
+      img.setAttribute('class', 'img-responsive');
 
 
       h3 = agregarTexto(h3, pelicula.titulo);
@@ -69,7 +70,7 @@ var IMDB = (function () {
     var existePelicula = function (pelicula) {
         var pos = -1;
         for (i = 0; i < peliculas.length && pos === -1; i++){
-          if (pelicula.id === peliculas[i].id){
+          if (pelicula.titulo === peliculas[i].titulo){
             pos = i;
           }
         }
@@ -248,3 +249,27 @@ var IMDB = (function () {
 
 
 window.onload = IMDB.iniciar;
+
+/*
+casos de prueba
+
+titulo:
+taxi driver
+
+descripción:
+robert de niro es un pibe
+
+imagen:
+http://i.imgur.com/OnGKQlV.jpg
+------------------
+titulo:
+star wars
+
+descripción:
+guerra de las galaxias
+
+imagen:
+http://i.imgur.com/c6myhws.jpg
+
+
+*/
