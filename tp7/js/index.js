@@ -80,7 +80,7 @@ var IMDB = (function () {
     localStorage.setItem('peliculas', datos);
   }
 
-  var recuperarPeliculas = function () {
+  /*var recuperarPeliculas = function () {
     var datos = localStorage.getItem('peliculas');
     if (datos !== null) {
         peliculas = JSON.parse(datos);
@@ -88,7 +88,7 @@ var IMDB = (function () {
     for (i in peliculas){
       dibujarPelicula(peliculas[i]); // llamar al otro modulo
   }
-}
+}*/
 
   var agregarPelicula = function (pelicula) {
     var pos = existePelicula(pelicula);
