@@ -28,13 +28,21 @@ var Spotify = (function () {
     var botonFav = $('<button/>')
       .addClass('btn btn-default')
       .attr('type', 'button')
-      .on('click', agregarAFavoritos(artista));
+      .off('click').on('click', function () { agregarAFavoritos(artista); });
 
-    $('<span/>')
-      .addClass('glyphicon glyphicon-star-empty')
-      .html('Favoritos')
-      .appendTo(botonFav);
-    botonFav.appendTo('#' + artista.id);
+    if (artista.getFav){
+      $('<span/>')
+        .addClass('glyphicon glyphicon-star')
+        .html('Favoritos')
+        .appendTo(botonFav);
+      botonFav.appendTo('#' + artista.id);
+    } else {
+      $('<span/>')
+        .addClass('glyphicon glyphicon-star-empty')
+        .html('Favoritos')
+        .appendTo(botonFav);
+      botonFav.appendTo('#' + artista.id);
+    }
 
     $('<h3/>')
       .html(artista.nombre)
@@ -48,7 +56,7 @@ var Spotify = (function () {
   }
 
   var buscarArtista = function () {
-    $("#buscarArtistas").on("click", function () {
+    $("#buscarArtistas").off('click').on("click", function () {
       $('#resultadoArtistas').empty();
       var artista = $("#buscadorArtistas").val();
       $.ajax({
@@ -57,8 +65,10 @@ var Spotify = (function () {
         dataType: "json"
       }).done(function (data) {
         for (obj of data.artists.items){
-          var artista = new Artista(obj.id, obj.name, obj.images[1].url, "");
-          dibujarArtista (artista);
+          if (obj.images.length > 1){
+            var artista = new Artista(obj.id, obj.name, obj.images[1].url, "");
+            dibujarArtista (artista);
+          }
         }
       }).fail(function (jqXHR, textStatus) {
         console.error("textStatus");
@@ -67,7 +77,7 @@ var Spotify = (function () {
   }
 
   var pestaniaFavoritos = function () {
-    $("#linkFavoritos").on('click', function () {
+    $("#linkFavoritos").off('click').on('click', function () {
       $("#linkFavoritos").parent().addClass("active");
       $("#linkBuscador").parent().removeClass("active");
       $("#pestaniaBuscador").removeClass("show").addClass("hidden");
@@ -76,7 +86,7 @@ var Spotify = (function () {
   }
 
   var pestaniaBuscador = function () {
-    $("#linkBuscador").on("click", function () {
+    $("#linkBuscador").off('click').on("click", function () {
       $("#linkBuscador").parent().addClass("active");
       $("#linkFavoritos").parent().removeClass("active");
       $("#pestaniaBuscador").removeClass("hidden").addClass("show");
@@ -88,12 +98,12 @@ var Spotify = (function () {
     artista.setFav(true);
     artistasFavoritos.push(artista);
     guardarArtista();
-    dibujarArtistaEnFavoritos(artista);
+    //dibujarArtistaEnFavoritos(artista);
   }
 
   var guardarArtista = function () {
     var artistas = JSON.stringify(artistasFavoritos);
-    localStorage.setItem(claveLocalStorage, datos);
+    localStorage.setItem(claveLocalStorage, artistas);
   }
 
   var iniciar = function () {

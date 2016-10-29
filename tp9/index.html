@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Coderhouse</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+		<script src="js/jquery-3.1.1.min.js"></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="js/script.js"></script>
+	</head>
+	<body>
+
+		<div class="container">
+			<div class="page-header">
+				<h1>TP 9</h1>
+				<h3>jQuery</h3>
+			</div>
+			<div class="row">
+				<div class="col-sm-4">
+					<h4>Nueva Pelicula</h4>
+					<form id="formulario">
+						<div class="form-group">
+							<label for="titulo">Título:</label>
+							<input type="text" class="form-control" name="titulo" id="titulo">
+						</div>
+						<div class="form-group">
+							<label for="descripcion">Descripción:</label>
+							<textarea class="form-control" rows="5" name="descripcion" id="descripcion"></textarea>
+						</div>
+						<div class="form-group">
+							<label for="imagen">Imagen:</label>
+							<input type="text" class="form-control" name="imagen" id="imagen">
+						</div>
+
+						<div class="form-group">
+							<label for="sel1">Categoría</label>
+							<select class="form-control" id="categoria">
+							    <option>Acción</option>
+							    <option>Ciencia Ficción</option>
+							    <option>Drama</option>
+							    <option>Terror</option>
+						  	</select>
+						</div>
+
+
+						<button id="boton" type="button" class="btn btn-primary">Agregar</button>
+					</form>
+				</div>
+		    	<div class="col-sm-8">
+
+					<div class="row" id="filtro">
+
+						<span class="col-sm-6">
+							<div class="form-group">
+								<label for="imagen">Título:</label>
+								<input type="text" id="buscadorPeliculas" class="form-control pull-right" placeholder="Buscar...">
+							</div>
+						</span>
+
+						<span class="col-sm-6">
+							<div class="form-group">
+								<label for="sel1">Categoría</label>
+								<select class="form-control" id="filtroCategoria">
+									<option>Todas</option>
+								    <option>Acción</option>
+								    <option>Ciencia Ficción</option>
+								    <option>Drama</option>
+								    <option>Terror</option>
+							  	</select>
+							</div>
+						</span>
+
+					</div>
+
+					<hr/>
+
+					<div class="row">
+						<span class="col-sm-8">
+							<div id="ordenadores" class="btn-group">
+							  <button id="id" type="button" class="btn btn-primary">ID</button>
+							  <button id="az" type="button" class="btn btn-primary">A-Z</button>
+							  <button id="za" type="button" class="btn btn-primary">Z-A</button>
+							</div>
+						</span>
+
+						<span class="col-sm-2">
+							<button id="borrarSeleccionados" type="button" class="btn btn-primary pull-right">Borrar seleccionadas</button>
+						</span>
+						<span class="col-sm-2">
+							<button id="mostrarOcultarListado" type="button" class="btn btn-primary pull-right">Ocultar Peliculas</button>
+						</span>
+					</div>
+
+					<div class="row">
+						<div id="peliculas" class="col-sm-12">
+						</div>
+					</div>
+		    	</div>
+		 	</div>
+		</div>
+	</body>
+</html>
