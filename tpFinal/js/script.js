@@ -4,9 +4,22 @@ function Artista (id, nombre, imagen){
   this.imagen = imagen;
 }
 
-function Album (id, nombre) {
+function Discografia (id, nombre) {
   this.id = id;
   this.nombre = nombre;
+}
+
+function Album (nombre, imagen, release_date) {
+  this.nombre = nombre;
+  this.imagen = imagen;
+  this.release_date = release_date;
+}
+
+function Cancion (numero, nombre, duracion, preview) {
+  this.numero = numero;
+  this.nombre = nombre;
+  this.duracion = duracion;
+  this.preview = preview;
 }
 
 
@@ -173,7 +186,7 @@ var Spotify = (function () {
       dataType: 'json'
     }).done(function  (data) {
       for (obj of data.items){
-        var discografia = new Album (obj.id, obj.name);
+        var discografia = new Discografia (obj.id, obj.name);
         dibujarDiscografia(id, discografia);
       }
     }).fail(function (jqXHR, textStatus) {
@@ -192,10 +205,69 @@ var Spotify = (function () {
       .appendTo('#' + discografia.id)
       .off('click')
       .on('click', function () {
-        reproducirCancion (discografia.id)
-      })
+        $("#dialogDetalleAlbum").modal("show");
+        mostrarAlbum (discografia.id);
+    })
   }
 
+  var mostrarAlbum = function (id) {
+    $.ajax({
+      url: 'https://api.spotify.com/v1/albums/' + id,
+      crossDomain: true,
+      dataType: 'json'
+    }).done(function (data) {
+      var album = new Album (data.name, data.images[1].url, data.release_date);
+      var canciones = data.tracks.items;
+      $("<ul/>").addClass("list-group canciones").appendTo(".modal-body");
+      if (canciones.length > 0){
+        for (var i = 0; i < data.tracks.items.length; i++){
+          var cancion = new Cancion (canciones[i].track_number, canciones[i].name, canciones[i].duration_ms, canciones[i].preview_url);
+          dibujarCancion(cancion);
+        }
+      }
+      dibujarAlbum(album);
+    })
+  }
+
+  var dibujarAlbum = function (album) {
+    $(".modal-header").empty();
+
+    $("<h3/>")
+      .html(album.nombre)
+      .addClass("text-center")
+      .appendTo(".modal-header");
+
+    $("<h4/>")
+      .html(album.release_date)
+      .addClass("text-center")
+      .appendTo(".modal-header");
+
+    $("<img/>")
+    .attr("src", album.imagen)
+    .appendTo(".modal-header");
+
+  }
+
+  var dibujarCancion = function (cancion) {
+
+    $("<li>")
+      .attr("id", cancion.numero)
+      .addClass("list-group-item")
+      .appendTo(".canciones");
+
+    $("<p>")
+      .html(cancion.numero)
+      .appendTo("#" + cancion.numero);
+
+    $("<p>")
+      .html(cancion.nombre)
+      .addClass(".text-center")
+      .appendTo("#" + cancion.numero);
+
+    $("<p>")
+      .html(moment(cancion.duracion).format("mm:ss"))
+      .appendTo("#" + cancion.numero)
+  }
 
   var iniciar = function () {
     buscarArtista();
