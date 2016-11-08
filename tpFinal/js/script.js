@@ -15,11 +15,11 @@ function Album (nombre, imagen, release_date) {
   this.release_date = release_date;
 }
 
-function Cancion (numero, nombre, duracion, preview) {
+function Cancion (numero, nombre, duracion, id) {
   this.numero = numero;
   this.nombre = nombre;
   this.duracion = duracion;
-  this.preview = preview;
+  this.id = id;
 }
 
 
@@ -218,10 +218,11 @@ var Spotify = (function () {
     }).done(function (data) {
       var album = new Album (data.name, data.images[1].url, data.release_date);
       var canciones = data.tracks.items;
-      $("<ul/>").addClass("list-group canciones").appendTo(".modal-body");
+      $(".canciones").empty();
+      $(".modal-header").empty();
       if (canciones.length > 0){
         for (var i = 0; i < data.tracks.items.length; i++){
-          var cancion = new Cancion (canciones[i].track_number, canciones[i].name, canciones[i].duration_ms, canciones[i].preview_url);
+          var cancion = new Cancion (canciones[i].track_number, canciones[i].name, canciones[i].duration_ms, canciones[i].id);
           dibujarCancion(cancion);
         }
       }
@@ -230,7 +231,6 @@ var Spotify = (function () {
   }
 
   var dibujarAlbum = function (album) {
-    $(".modal-header").empty();
 
     $("<h3/>")
       .html(album.nombre)
@@ -249,24 +249,41 @@ var Spotify = (function () {
   }
 
   var dibujarCancion = function (cancion) {
-
-    $("<li>")
-      .attr("id", cancion.numero)
+    var li = $("<li>")
       .addClass("list-group-item")
       .appendTo(".canciones");
 
     $("<p>")
       .html(cancion.numero)
-      .appendTo("#" + cancion.numero);
+      .appendTo(li);
 
     $("<p>")
       .html(cancion.nombre)
       .addClass(".text-center")
-      .appendTo("#" + cancion.numero);
+      .appendTo(li)
+      .on("click", function () {
+        reproducirCancion(cancion.id, li)
+      })
 
     $("<p>")
       .html(moment(cancion.duracion).format("mm:ss"))
-      .appendTo("#" + cancion.numero)
+      .appendTo(li)
+  }
+
+  var reproducirCancion = function (id, li) {
+
+    li.find('iframe').remove();
+
+    $("<iframe/>")
+      .attr({
+        'src': 'https://embed.spotify.com/?uri=spotify:track:' + id + '&theme=white&view=coverart',
+        'width': "100%",
+        'height': "80px",
+        'frameborder': "0",
+        'allowtransparency': "true"
+      })
+      .addClass("reproductor")
+      .appendTo(li);
   }
 
   var iniciar = function () {
